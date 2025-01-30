@@ -14,7 +14,7 @@ class CreateUserController{
            
         );
         
-        return res.json({res: true})
+        return res.json(user);
     }
 }
 export { CreateUserController };

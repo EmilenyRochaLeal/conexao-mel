@@ -10,7 +10,7 @@ Repositorio da startup Conexão Mel
 <h3>controller</h3>
  1. Criar dentro do controller uma pasta user, depois criar o arquivo CreateUserController.ts;
  2. O controller terá um método async handle que cuidará da Request e Response;
- 3. O controller repassa para o service as requisições;
+ 3. O controller repassa para o service as requisições descontruindo;
  4. Intânciar o services;
  5. Acessar o método execute com await para aguardar o tempo de resposta;
 
@@ -28,3 +28,19 @@ Repositorio da startup Conexão Mel
  1. Em services importa o prismaClient sem chaves, pois é export default </br>
  2. Fazer as verificações dos campos como se há um email ou se o email digitado já existe com prismaClient.user.findFirt </br>
  3. Cadastrar os dados no banco com prismaClient.user.create
+
+ # Criptografia da senha 
+ [Entenda a bcryptjs](https://dev.to/mr_walkr/password-hashing-in-nodejs-using-bcryptjs-library-3j56)
+1. Instalar as dependências 
+Usando yarn 
+```bash 
+    yarn add bcryptjs
+    yarn add @types/bryptjs -D
+```
+2. import em services e usar o hash para criptografar o password com 8 salt rounds
+
+# Autenticação 
+1. criar um service # AuthUserService
+2. criar um controller # AuthUserController
+3. criar a rota 
+4. fazer as verificações 
