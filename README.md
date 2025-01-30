@@ -24,3 +24,7 @@ Repositorio da startup Conexão Mel
  2. Criar uma interface chamada UserRequest com os campos name, email e password
  3. Criar uma class CreateUserService
  4. Criar o método execute com async e com os parametros name, email e password do tipo UserRequest
+ <h4>Cadastrar no banco de dados</h4> </br>
+ 1. Em services importa o prismaClient sem chaves, pois é export default </br>
+ 2. Fazer as verificações dos campos como se há um email ou se o email digitado já existe com prismaClient.user.findFirt </br>
+ 3. Cadastrar os dados no banco com prismaClient.user.create
