@@ -8,4 +8,9 @@ const router = Router();
 router.post('/users', new CreateUserController().handle)
 router.post('/signin', new AuthUserController().handle)
 
+// Rota para testar o deploy backend 
+router.get('/', (req, res) => {
+    res.send('Deploy Backend feito com sucesso. ');
+});
+
 export { router };

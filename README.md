@@ -6,6 +6,7 @@ Repositorio da startup Conexão Mel
 2. git branch # em qual branch está 
 3. git checkout nome branch # para mudar de branch 
 
+
 # Cadastro 
 <h3>controller</h3>
  1. Criar dentro do controller uma pasta user, depois criar o arquivo CreateUserController.ts;
