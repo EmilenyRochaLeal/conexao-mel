@@ -1,62 +1,62 @@
--- CreateEnum
-CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'COMPLETED', 'CANCELED');
+    -- CreateEnum
+    CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'COMPLETED', 'CANCELED');
 
--- CreateTable
-CREATE TABLE "categories" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    -- CreateTable
+    CREATE TABLE "categories" (
+        "id" TEXT NOT NULL,
+        "name" TEXT NOT NULL,
+        "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "categories_pkey" PRIMARY KEY ("id")
-);
+        CONSTRAINT "categories_pkey" PRIMARY KEY ("id")
+    );
 
--- CreateTable
-CREATE TABLE "products" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "price" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "banner" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "category_id" TEXT NOT NULL,
+    -- CreateTable
+    CREATE TABLE "products" (
+        "id" TEXT NOT NULL,
+        "name" TEXT NOT NULL,
+        "price" TEXT NOT NULL,
+        "description" TEXT NOT NULL,
+        "banner" TEXT NOT NULL,
+        "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+        "category_id" TEXT NOT NULL,
 
-    CONSTRAINT "products_pkey" PRIMARY KEY ("id")
-);
+        CONSTRAINT "products_pkey" PRIMARY KEY ("id")
+    );
 
--- CreateTable
-CREATE TABLE "orders" (
-    "id" TEXT NOT NULL,
-    "status" "OrderStatus" NOT NULL DEFAULT 'PENDING',
-    "consumer_id" TEXT NOT NULL,
-    "total_price" DOUBLE PRECISION NOT NULL,
-    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    -- CreateTable
+    CREATE TABLE "orders" (
+        "id" TEXT NOT NULL,
+        "status" "OrderStatus" NOT NULL DEFAULT 'PENDING',
+        "consumer_id" TEXT NOT NULL,
+        "total_price" DOUBLE PRECISION NOT NULL,
+        "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
-);
+        CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
+    );
 
--- CreateTable
-CREATE TABLE "items" (
-    "id" TEXT NOT NULL,
-    "amount" INTEGER NOT NULL,
-    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "order_id" TEXT NOT NULL,
-    "product_id" TEXT NOT NULL,
+    -- CreateTable
+    CREATE TABLE "items" (
+        "id" TEXT NOT NULL,
+        "amount" INTEGER NOT NULL,
+        "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+        "order_id" TEXT NOT NULL,
+        "product_id" TEXT NOT NULL,
 
-    CONSTRAINT "items_pkey" PRIMARY KEY ("id")
-);
+        CONSTRAINT "items_pkey" PRIMARY KEY ("id")
+    );
 
--- AddForeignKey
-ALTER TABLE "products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+    -- AddForeignKey
+    ALTER TABLE "products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
-ALTER TABLE "orders" ADD CONSTRAINT "orders_consumer_id_fkey" FOREIGN KEY ("consumer_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+    -- AddForeignKey
+    ALTER TABLE "orders" ADD CONSTRAINT "orders_consumer_id_fkey" FOREIGN KEY ("consumer_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
-ALTER TABLE "items" ADD CONSTRAINT "items_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+    -- AddForeignKey
+    ALTER TABLE "items" ADD CONSTRAINT "items_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
-ALTER TABLE "items" ADD CONSTRAINT "items_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+    -- AddForeignKey
+    ALTER TABLE "items" ADD CONSTRAINT "items_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
