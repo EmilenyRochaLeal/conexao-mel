@@ -9,9 +9,10 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  nome      String
+  name      String
   email     String   @unique
-  tipo      UserType
+  password  String?  // ❗ Alterado para opcional
+  role      UserType
   produtos  Produto[] @relation("VendedorProduto")
   pedidos   Pedido[] @relation("CompradorPedido")
   Avaliacao Avaliacao[]
@@ -19,13 +20,14 @@ model User {
 
 model Produto {
   id         Int      @id @default(autoincrement())
-  nome       String
+  name       String
   preco      Float
   descricao  String
-  imagemNome String?
-  tipo       Tipodemel
+  imagemName String?
+  role       Roledemel
   vendedor   User     @relation("VendedorProduto", fields: [vendedorId], references: [id])
   vendedorId Int
+  estoque     Float 
   pedidos    Pedido[]
   avaliacoes Avaliacao[]
 }
@@ -38,6 +40,7 @@ model Pedido {
   totalPrice  Float
   produto     Produto  @relation(fields: [produtoId], references: [id])
   produtoId   Int
+  quantidade   Float
 }
 
 model Avaliacao {
@@ -55,8 +58,8 @@ enum UserType {
   COMPRADOR
 }
 
-enum Tipodemel {
-  cajueiro
+enum Roledemel {
+  Cajueiro
   Aroeira
   Eucalipto
   Laranjeira
@@ -66,6 +69,7 @@ enum Tipodemel {
 }
 
 enum PedidoEstado {
-  PROCESSANDO
+  ANDAMENTO
+  CANCELADO
   PRONTO 
 }

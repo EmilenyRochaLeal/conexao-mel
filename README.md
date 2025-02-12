@@ -72,6 +72,11 @@ Se estiver usando yarn:
 
 ``` yarn dev ```
 
+### 1️⃣ **Gerar a migração do banco de dados**
+Se houver mudanças no **schema.prisma**, crie uma nova migração:
+
+```npx prisma migrate dev --name add_estoque ```
+
 
 ### Possíveis Erros e Soluções
 🔴 Erro P1001: Can't reach database server
