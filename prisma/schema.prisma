@@ -8,76 +8,64 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  name       String
-  email      String
-  password   String
-  role       Role      @default(CONSUMER)
-  created_at DateTime? @default(now())
-  update_at  DateTime? @default(now())
-  Order      Order[]
-
-  @@map("users")
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  tipo      UserType
+  produtos  Produto[] @relation("VendedorProduto")
+  pedidos   Pedido[] @relation("CompradorPedido")
+  Avaliacao Avaliacao[]
 }
 
-model Category {
-  id         String    @id @default(uuid())
-  name       String
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
-  products   Product[]
-
-  @@map("categories")
+model Produto {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  preco      Float
+  descricao  String
+  imagemNome String?
+  tipo       Tipodemel
+  vendedor   User     @relation("VendedorProduto", fields: [vendedorId], references: [id])
+  vendedorId Int
+  pedidos    Pedido[]
+  avaliacoes Avaliacao[]
 }
 
-model Product {
-  id          String    @id @default(uuid())
-  name        String
-  price       String
-  description String
-  banner      String
-  created_at  DateTime? @default(now())
-  updated_at  DateTime? @default(now())
-  category_id String
-  items       Item[]
-  category    Category  @relation(fields: [category_id], references: [id])
-
-  @@map("products")
+model Pedido {
+  id          Int      @id @default(autoincrement())
+  comprador   User     @relation("CompradorPedido", fields: [compradorId], references: [id])
+  compradorId Int
+  estado      PedidoEstado
+  totalPrice  Float
+  produto     Produto  @relation(fields: [produtoId], references: [id])
+  produtoId   Int
 }
 
-model Order {
-  id          String      @id @default(uuid())
-  status      OrderStatus @default(PENDING)
-  consumer_id String
-  total_price Float
-  created_at  DateTime?   @default(now())
-  updated_at  DateTime?   @default(now())
-  items       Item[]
-  consumer    User        @relation(fields: [consumer_id], references: [id])
-
-  @@map("orders")
+model Avaliacao {
+  id          Int    @id @default(autoincrement())
+  produto     Produto @relation(fields: [produtoId], references: [id])
+  produtoId   Int
+  comprador   User    @relation(fields: [compradorId], references: [id])
+  compradorId Int
+  avaliacao   Int
+  descricao   String
 }
 
-model Item {
-  id         String    @id @default(uuid())
-  amount     Int
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
-  order_id   String
-  product_id String
-  order      Order     @relation(fields: [order_id], references: [id])
-  product    Product   @relation(fields: [product_id], references: [id])
-
-  @@map("items")
+enum UserType {
+  VENDEDOR
+  COMPRADOR
 }
 
-enum Role {
-  PRODUCER
-  CONSUMER
+enum Tipodemel {
+  cajueiro
+  Aroeira
+  Eucalipto
+  Laranjeira
+  Jataí
+  Marmeleiro
+  Silvestre
 }
 
-enum OrderStatus {
-  PENDING
-  COMPLETED
-  CANCELED
+enum PedidoEstado {
+  PROCESSANDO
+  PRONTO 
 }
