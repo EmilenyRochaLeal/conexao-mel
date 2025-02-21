@@ -8,43 +8,57 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String?  // ❗ Alterado para opcional
+  id        Int         @id @default(autoincrement())
+  name      String      @db.VarChar(100)
+  email     String      @unique @db.VarChar(100)
+  password  String      @db.VarChar(255)
   role      UserType
-  produtos  Produto[] @relation("VendedorProduto")
-  pedidos   Pedido[] @relation("CompradorPedido")
-  Avaliacao Avaliacao[]
+  produtos  Produto[]   @relation("VendedorProduto")
+  pedidos   Pedido[]    @relation("CompradorPedido")
+  avaliacao Avaliacao[]
+  createdAt DateTime    @default(now())
+
+  @@index([role])
+  @@index([createdAt])
 }
 
 model Produto {
-  id         Int      @id @default(autoincrement())
-  name       String
-  preco      Float
-  descricao  String
+  id         Int         @id @default(autoincrement())
+  name       String      @db.VarChar(100)
+  preco      Decimal     @db.Decimal(10, 2) // 10 dígitos no total, 2 casas decimais
+  estoque    Decimal     @db.Decimal(10, 2) 
+  descricao  String      @db.VarChar(500)
   imagemName String?
   role       Roledemel
-  vendedor   User     @relation("VendedorProduto", fields: [vendedorId], references: [id])
+  vendedor   User        @relation("VendedorProduto", fields: [vendedorId], references: [id])
   vendedorId Int
-  estoque     Float 
   pedidos    Pedido[]
   avaliacoes Avaliacao[]
+
+  @@index([preco])
+  @@index([role])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Pedido {
-  id          Int      @id @default(autoincrement())
-  comprador   User     @relation("CompradorPedido", fields: [compradorId], references: [id])
+  id          Int          @id @default(autoincrement())
+  comprador   User         @relation("CompradorPedido", fields: [compradorId], references: [id])
   compradorId Int
   estado      PedidoEstado
-  totalPrice  Float
-  produto     Produto  @relation(fields: [produtoId], references: [id])
+  produto     Produto      @relation(fields: [produtoId], references: [id])
   produtoId   Int
-  quantidade   Float
+  totalPrice Decimal   @db.Decimal(10, 2)
+  quantidade Decimal   @db.Decimal(10, 2)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
 }
 
 model Avaliacao {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   produto     Produto @relation(fields: [produtoId], references: [id])
   produtoId   Int
   comprador   User    @relation(fields: [compradorId], references: [id])
@@ -71,5 +85,5 @@ enum Roledemel {
 enum PedidoEstado {
   ANDAMENTO
   CANCELADO
-  PRONTO 
+  PRONTO
 }
