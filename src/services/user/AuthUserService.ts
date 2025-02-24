@@ -21,7 +21,7 @@ class AuthUserService{
         const passwordCompare = await compare(password, user.password);
 
         if (passwordCompare == false){
-            throw new Error("Email ou Senha incorreto");
+            throw new Error("Senha incorreto");
         }
 
         const token = sign(

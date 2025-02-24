@@ -96,3 +96,21 @@ E tente novamente:
 
 ``` npx prisma studio ``` 
 
+# Implementação do token com JWT para autenticação 
+
+1. Instalação do jsonwentoken 
+
+``` npm i jsonwebtoken ``` 
+
+2. Instalar as Tipagem 
+
+``` npm i --save-dev @types/jsonwebtoken ``` 
+
+3. Criar uma chave secreta JWT no [MDS](https://www.md5hashgenerator.com/)
+4. colocar a chave no arquivo .env 
+5. Instalar o [dotenv](https://www.npmjs.com/package/dotenv)
+6. No arquivo AuthUserService importar o sign e criar a estrutura do token 
+Nessa estrutura contém: 
+ - Informações do usuário (Payload): name, email
+ - Chave secreta : JWT_SECRET
+ - Opções do token (subject): id; (expiresIn): quando expira o token
