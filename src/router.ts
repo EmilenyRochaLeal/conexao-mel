@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { CreateUserController } from "./controller/user/CreateUserController";
 import { AuthUserController } from './controller/user/AuthUserController';
+import { SellerController } from "./controller/user/SellerController";
+
+import { isAuthenticated } from "./middleware/isAuthenticated";
 
 
 const router = Router();
@@ -18,5 +21,8 @@ router.get("/", (req, res) => {
   
 
 router.post("/register", (req, res) => createUserController.handle(req, res));
+
+// Rotas do produtor 
+router.get('/seller', isAuthenticated , new SellerController().handle)
 
 export default  router;
