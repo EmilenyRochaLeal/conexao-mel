@@ -5,10 +5,10 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-
 interface UserRequest {
   name: string;
   email: string;
+  telefone: string;
   password: string;
   role: string;
 }
@@ -24,9 +24,12 @@ export class CreateUserService {
   async execute({
     name,
     email,
+    telefone,
     password,
     role,
   }: UserRequest) {
+
+  
     
     // VALIDAÇÕES POR EMAIL, SENHA, NOME 
 
@@ -53,13 +56,15 @@ export class CreateUserService {
       data: {
         name: name,
         email: email,
+        telefone: telefone,
         password: passwordHash,
         role: role as UserType,
       },
       select: {
         id: true,
         name: true,
-        email: true,
+        email: true, 
+        telefone: true,
         createdAt: true,
       },
     });

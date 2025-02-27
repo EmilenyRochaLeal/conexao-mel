@@ -15,6 +15,6 @@ router.get("/", (req, res) => {
   });
   
 
-router.post("/register", (req, res) => createUserController.handle(req, res));
+router.post("/cadastro", (req, res) => createUserController.handle(req, res));
 
 export default  router;

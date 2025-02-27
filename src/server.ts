@@ -2,8 +2,18 @@ import express, {Response, Request, NextFunction} from 'express'
 import 'express-async-errors';
 import cors from 'cors';
 import router from './router'
+import dotenv from 'dotenv';
+
+
+dotenv.config();
 
 const app = express();
+
+// Configuração do CORS
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000', // URL do projeto frontend
+    credentials: true
+}));
 
 // Permite o uso de json
 app.use(express.json()); 

@@ -11,12 +11,13 @@ model User {
   id        Int         @id @default(autoincrement())
   name      String      @db.VarChar(100)
   email     String      @unique @db.VarChar(100)
-  password  String      @db.VarChar(255)
   role      UserType
-  produtos  Produto[]   @relation("VendedorProduto")
-  pedidos   Pedido[]    @relation("CompradorPedido")
-  avaliacao Avaliacao[]
+  password  String      @db.VarChar(255)
   createdAt DateTime    @default(now())
+  telefone  String      @default("")
+  avaliacao Avaliacao[]
+  pedidos   Pedido[]    @relation("CompradorPedido")
+  produtos  Produto[]   @relation("VendedorProduto")
 
   @@index([role])
   @@index([createdAt])
@@ -25,46 +26,43 @@ model User {
 model Produto {
   id         Int         @id @default(autoincrement())
   name       String      @db.VarChar(100)
-  preco      Decimal     @db.Decimal(10, 2) // 10 dígitos no total, 2 casas decimais
-  estoque    Decimal     @db.Decimal(10, 2) 
+  preco      Decimal     @db.Decimal(10, 2)
   descricao  String      @db.VarChar(500)
   imagemName String?
   role       Roledemel
-  vendedor   User        @relation("VendedorProduto", fields: [vendedorId], references: [id])
   vendedorId Int
-  pedidos    Pedido[]
+  estoque    Decimal     @db.Decimal(10, 2)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
   avaliacoes Avaliacao[]
+  pedidos    Pedido[]
+  vendedor   User        @relation("VendedorProduto", fields: [vendedorId], references: [id])
 
   @@index([preco])
   @@index([role])
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
 }
 
 model Pedido {
   id          Int          @id @default(autoincrement())
-  comprador   User         @relation("CompradorPedido", fields: [compradorId], references: [id])
   compradorId Int
   estado      PedidoEstado
-  produto     Produto      @relation(fields: [produtoId], references: [id])
+  totalPrice  Decimal      @db.Decimal(10, 2)
   produtoId   Int
-  totalPrice Decimal   @db.Decimal(10, 2)
-  quantidade Decimal   @db.Decimal(10, 2)
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
+  quantidade  Decimal      @db.Decimal(10, 2)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  comprador   User         @relation("CompradorPedido", fields: [compradorId], references: [id])
+  produto     Produto      @relation(fields: [produtoId], references: [id])
 }
 
 model Avaliacao {
   id          Int     @id @default(autoincrement())
-  produto     Produto @relation(fields: [produtoId], references: [id])
   produtoId   Int
-  comprador   User    @relation(fields: [compradorId], references: [id])
   compradorId Int
   avaliacao   Int
   descricao   String
+  comprador   User    @relation(fields: [compradorId], references: [id])
+  produto     Produto @relation(fields: [produtoId], references: [id])
 }
 
 enum UserType {
@@ -77,7 +75,6 @@ enum Roledemel {
   Aroeira
   Eucalipto
   Laranjeira
-  Jataí
   Marmeleiro
   Silvestre
 }
