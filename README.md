@@ -114,3 +114,21 @@ Nessa estrutura contém:
  - Informações do usuário (Payload): name, email
  - Chave secreta : JWT_SECRET
  - Opções do token (subject): id; (expiresIn): quando expira o token
+
+
+ - Error de user_id não existe no Request 
+    (Property 'user_id' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>')
+
+    - Solução : Sobrescrever a tipagem do Request 
+    1 - criar em src uma pasta chamada @types
+    2 - dentro de @types criar outra pasta chamada express
+    3 - criar um arquivo na pasta express chamado index.d.ts 
+    4 - declare namespace Express{
+        export interface Request{
+            user_id: string;
+        }
+    5 - Ir no arquivo tsconfig.json descomentar a linha  "typeRoots": []
+    6 - Adicionar  no "typeRoots": [
+      "./src/@types"
+    ], 
+} 

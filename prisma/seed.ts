@@ -1,47 +1,37 @@
-import { PrismaClient, Roledemel } from "@prisma/client";
+import { PrismaClient, Roledemel, UserType, PedidoEstado } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  // Criando usuários (vendedores e compradores) se ainda não existirem
-  const vendedores = await prisma.user.createMany({
-    data: [
-      { name: "Diego Ferreira", email: "diego@email.com", password: "segredo123", role: "VENDEDOR" },
-      { name: "Eliana Rocha", email: "eliana@email.com", password: "segredo123", role: "VENDEDOR" },
-      { name: "Fernando Lima", email: "fernando@email.com", password: "segredo123", role: "VENDEDOR" },
-    ],
-    skipDuplicates: true, // Evita erro caso o usuário já exista
-  });
 
-  const compradores = await prisma.user.createMany({
+  await prisma.user.createMany({
     data: [
-      { name: "Alice Silva", email: "alice@email.com", password: "senha456", role: "COMPRADOR" },
-      { name: "Bruno Souza", email: "bruno@email.com", password: "senha456", role: "COMPRADOR" },
-      { name: "Carla Mendes", email: "carla@email.com", password: "senha456", role: "COMPRADOR" },
+      { name: "Diego Ferreira", email: "diego@email.com", password: "Segredo@123", telefone: "8998101122",  role: UserType.VENDEDOR },
+      { name: "Eliana Rocha", email: "eliana@email.com", password: "Segredo12@3", telefone: "8998103345",role: UserType.VENDEDOR },
     ],
     skipDuplicates: true,
   });
 
   console.log("✅ Vendedores e compradores inseridos com sucesso!");
 
-  // Buscar vendedores e compradores após a inserção
-  const listaVendedores = await prisma.user.findMany({ where: { role: "VENDEDOR" } });
-  const listaCompradores = await prisma.user.findMany({ where: { role: "COMPRADOR" } });
+
+  const listaVendedores = await prisma.user.findMany({ where: { role: UserType.VENDEDOR } });
+  const listaCompradores = await prisma.user.findMany({ where: { role: UserType.COMPRADOR } });
 
   if (listaVendedores.length < 1 || listaCompradores.length < 1) {
     console.error("❌ Erro: É necessário pelo menos um vendedor e um comprador cadastrados.");
     process.exit(1);
   }
 
-  // Criando produtos com estoque inicial
-  const produtos = await prisma.produto.createMany({
+ 
+  await prisma.produto.createMany({
     data: [
       {
         name: "Mel de Eucalipto",
         preco: 25.50,
         descricao: "Mel puro de eucalipto, excelente para a saúde respiratória.",
         role: Roledemel.Eucalipto,
-        vendedorId: listaVendedores[0].id,
+        vendedorId: listaVendedores[0].id, 
         estoque: 100.0,
       },
       {
@@ -61,47 +51,48 @@ async function main() {
         estoque: 200.0,
       },
     ],
+    skipDuplicates: true,
   });
 
   console.log("✅ Produtos inseridos com sucesso!");
 
-  // Buscar produtos recém-criados
+  
   const produtosCadastrados = await prisma.produto.findMany();
 
-  // Criando pedidos e reduzindo o estoque
+ 
   for (const comprador of listaCompradores) {
     const produtoEscolhido = produtosCadastrados[Math.floor(Math.random() * produtosCadastrados.length)];
-    const quantidadeCompra = 10.0; // Exemplo: o comprador quer comprar 10 litros
-
-    if (produtoEscolhido.estoque >= quantidadeCompra) {
+    const quantidadeCompra = 10.0; 
+  
+    if (produtoEscolhido.estoque.toNumber() >= quantidadeCompra) {
       await prisma.pedido.create({
         data: {
-          compradorId: comprador.id,
-          estado: "ANDAMENTO",
-          totalPrice: produtoEscolhido.preco * quantidadeCompra,
-          produtoId: produtoEscolhido.id,
+          compradorId: comprador.id, 
+          estado: PedidoEstado.ANDAMENTO,
+          totalPrice: produtoEscolhido.preco.toNumber() * quantidadeCompra, // Convertendo para evitar erro
+          produtoId: produtoEscolhido.id, 
           quantidade: quantidadeCompra,
         },
       });
-
+  
       // Atualizando o estoque do produto
       await prisma.produto.update({
         where: { id: produtoEscolhido.id },
         data: { estoque: { decrement: quantidadeCompra } },
       });
-
-      console.log(`✅ Pedido criado para ${comprador.email} - ${quantidadeCompra} litros de ${produtoEscolhido.name}`);
+  
+      console.log(`Pedido criado para ${comprador.email} - ${quantidadeCompra} litros de ${produtoEscolhido.name}`);
     } else {
-      console.log(`❌ Estoque insuficiente para ${produtoEscolhido.name}`);
+      console.log(`Estoque insuficiente para ${produtoEscolhido.name}`);
     }
   }
+  
 
-  // Criando avaliações de produtos
   await prisma.avaliacao.createMany({
     data: [
       {
-        produtoId: produtosCadastrados[0].id,
-        compradorId: listaCompradores[0].id,
+        produtoId: produtosCadastrados[0].id, 
+        compradorId: listaCompradores[0].id, 
         avaliacao: 5,
         descricao: "Mel excelente! Sabor incrível e ótima qualidade.",
       },
@@ -118,9 +109,10 @@ async function main() {
         descricao: "Ótimo produto! Vale muito a pena.",
       },
     ],
+    skipDuplicates: true,
   });
 
-  console.log("✅ Avaliações inseridas com sucesso!");
+  console.log("Avaliações inseridas com sucesso!");
 }
 
 main()

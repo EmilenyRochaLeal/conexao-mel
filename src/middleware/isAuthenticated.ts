@@ -20,6 +20,8 @@ export function isAuthenticated(req: Request, res: Response, next: NextFunction)
             process.env.JWT_SECRET
         ) as Playload;
         
+        req.user_id = sub;
+
         return next();
     } catch (error) {
         return res.status(401).end();

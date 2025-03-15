@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { CreateUserController } from "./controller/user/CreateUserController";
 import { AuthUserController } from './controller/user/AuthUserController';
-import { SellerController } from "./controller/user/SellerController";
+import { VendedorController } from "./controller/user/VendedorController";
 
 import { isAuthenticated } from "./middleware/isAuthenticated";
 
@@ -10,19 +10,17 @@ const router = Router();
 
 const createUserController = new CreateUserController();
 
-// Rotas user
-// router.post('/users', new CreateUserController().handle)
-router.post('/signin', new AuthUserController().handle)
-
 // Rota para testar o deploy backend
 router.get("/", (req, res) => {
     res.send("Conexão Mel está funcionando!");
   });
-  
 
-router.post("/cadastro", (req, res) => createUserController.handle(req, res));
+// Rotas user
+router.post('/cadastro', new CreateUserController().handle)
+
+router.post('/signin', new AuthUserController().handle)
 
 // Rotas do produtor 
-router.get('/seller', isAuthenticated , new SellerController().handle)
+router.get('/me', isAuthenticated , new VendedorController().handle)
 
 export default  router;

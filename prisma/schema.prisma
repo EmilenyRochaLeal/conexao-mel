@@ -7,8 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Criar uma nova migrate: npx prisma migrate dev
+// Resetar dados do banco : npx prisma migrate reset
+
 model User {
-  id        Int         @id @default(autoincrement())
+  id        String      @id @default(uuid())
   name      String      @db.VarChar(100)
   email     String      @unique @db.VarChar(100)
   role      UserType
@@ -24,13 +27,13 @@ model User {
 }
 
 model Produto {
-  id         Int         @id @default(autoincrement())
+  id         String      @id @default(uuid())
   name       String      @db.VarChar(100)
   preco      Decimal     @db.Decimal(10, 2)
   descricao  String      @db.VarChar(500)
   imagemName String?
   role       Roledemel
-  vendedorId Int
+  vendedorId String
   estoque    Decimal     @db.Decimal(10, 2)
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
@@ -43,11 +46,11 @@ model Produto {
 }
 
 model Pedido {
-  id          Int          @id @default(autoincrement())
-  compradorId Int
+  id          String @id @default(uuid())
+  compradorId String
   estado      PedidoEstado
   totalPrice  Decimal      @db.Decimal(10, 2)
-  produtoId   Int
+  produtoId   String
   quantidade  Decimal      @db.Decimal(10, 2)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -56,9 +59,9 @@ model Pedido {
 }
 
 model Avaliacao {
-  id          Int     @id @default(autoincrement())
-  produtoId   Int
-  compradorId Int
+  id          String @id @default(uuid())
+  produtoId   String
+  compradorId String
   avaliacao   Int
   descricao   String
   comprador   User    @relation(fields: [compradorId], references: [id])
