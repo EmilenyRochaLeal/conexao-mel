@@ -3,11 +3,25 @@ import 'express-async-errors';
 import cors from 'cors';
 import router from './router'
 import dotenv from 'dotenv';
+// import fileUpload from 'express-fileupload';
+import path from 'path';
 
 
 dotenv.config();
 
 const app = express();
+
+app.use(express.json()); 
+
+app.use(cors());
+// app.use(fileUpload({
+//     limits: {fileSize: 50 * 1024 * 1024}
+// }));
+app.use(
+    '/files', 
+    express.static(path.resolve(__dirname, '..', 'tmp'))
+)
+app.use(router);
 
 // Configuração do CORS
 app.use(cors({
@@ -15,12 +29,11 @@ app.use(cors({
     credentials: true
 }));
 
-// Permite o uso de json
-app.use(express.json()); 
 
-app.use(cors());
 
-app.use(router);
+
+
+
 
 // Middleware para tratamento de erros
 app.use((err: Error, req: Request, res: Response, next: NextFunction)=>{
