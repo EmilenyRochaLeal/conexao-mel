@@ -28,7 +28,6 @@ model User {
 
 model Produto {
   id         String      @id @default(uuid())
-  name       String      @db.VarChar(100)
   preco      Decimal     @db.Decimal(10, 2)
   descricao  String      @db.VarChar(500)
   imagemName String?

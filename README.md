@@ -131,4 +131,8 @@ Nessa estrutura contém:
     6 - Adicionar  no "typeRoots": [
       "./src/@types"
     ], 
+
+- Imagens 
+   1. Usando no cloudinary
+   
 } 
