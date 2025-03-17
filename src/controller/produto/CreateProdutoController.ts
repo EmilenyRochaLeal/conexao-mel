@@ -14,8 +14,6 @@ class CreateProdutoController {
 
             const {originalname, filename: imagemName } = req.file;
 
-            
-
             const produto = await createProdutoService.execute({
                 preco, 
                 descricao, 
