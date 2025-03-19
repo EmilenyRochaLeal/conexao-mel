@@ -11,7 +11,7 @@ interface ProdutoRequest{
 }
 
 class CreateProdutoService{
-    async execute({ preco, descricao, imagemName, role ,vendedorId, estoque = 0}: ProdutoRequest){
+    async execute({ preco, descricao, imagemName, role ,vendedorId, estoque = 1}: ProdutoRequest){
 
         const produto = await  prismaClient.produto.create({
             data:{

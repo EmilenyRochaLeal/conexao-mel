@@ -4,6 +4,7 @@ import { CreateUserController } from "./controller/user/CreateUserController";
 import { AuthUserController } from './controller/user/AuthUserController';
 import { VendedorController } from "./controller/user/VendedorController";
 import { CreateProdutoController } from "./controller/produto/CreateProdutoController";
+import { ListProdutoController } from "./controller/produto/ListProdutoController";
 
 import { isAuthenticated } from "./middleware/isAuthenticated";
 
@@ -30,5 +31,6 @@ router.get('/me', isAuthenticated , new VendedorController().handle)
 
 // Rotas de produto
 router.post('/produto', isAuthenticated , upload.single('imagemName'),  new CreateProdutoController().handle)
+router.get('/listagem',  new ListProdutoController().handle)
 
 export default  router;
