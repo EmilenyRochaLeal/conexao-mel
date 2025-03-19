@@ -6,6 +6,7 @@ import { VendedorController } from "./controller/user/VendedorController";
 import { CreateProdutoController } from "./controller/produto/CreateProdutoController";
 import { ListProdutoController } from "./controller/produto/ListProdutoController";
 import { DeleteProdutoController } from "./controller/produto/DeleteProdutoController";
+import { PutProdutoController } from "./controller/produto/PutProdutoController";
 
 import { isAuthenticated } from "./middleware/isAuthenticated";
 
@@ -34,5 +35,7 @@ router.get('/me', isAuthenticated , new VendedorController().handle)
 router.post('/produto', isAuthenticated , upload.single('imagemName'),  new CreateProdutoController().handle)
 router.get('/listagem',  new ListProdutoController().handle)
 router.delete('/produto',  isAuthenticated, new DeleteProdutoController().handle)
+router.put('/produto',  isAuthenticated, new PutProdutoController().handle)
+
 
 export default  router;
