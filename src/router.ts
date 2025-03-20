@@ -32,7 +32,8 @@ router.get('/me', isAuthenticated , new VendedorController().handle)
 
 
 // Rotas de produto
-router.post('/produto', isAuthenticated , upload.single('imagemName'),  new CreateProdutoController().handle)
+// router.post('/produto', isAuthenticated , upload.single('imagemName'),  new CreateProdutoController().handle)
+router.post('/produto', isAuthenticated ,  new CreateProdutoController().handle)
 router.get('/listagem',  new ListProdutoController().handle)
 router.delete('/produto',  isAuthenticated, new DeleteProdutoController().handle)
 router.put('/produto',  isAuthenticated, new PutProdutoController().handle)
