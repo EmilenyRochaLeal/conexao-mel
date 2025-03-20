@@ -15,7 +15,13 @@ class ListProdutos{
                     role: true, 
                     vendedorId:true,
                     estoque:true,
-                }
+                    vendedor: {
+                        select: {
+                          name: true,
+                          telefone: true,
+                        },
+                      },
+                },
             }
         );
 
