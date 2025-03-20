@@ -1,7 +1,9 @@
 import express, {Response, Request, NextFunction} from 'express'
 import 'express-async-errors';
 import cors from 'cors';
-import router from './router'
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger.json"
+import router from './router';
 import dotenv from 'dotenv';
 import fileUpload from 'express-fileupload';
 import path from 'path';
@@ -22,6 +24,10 @@ app.use(
     express.static(path.resolve(__dirname, '..', 'tmp'))
 )
 app.use(router);
+
+// Configuração do Swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // Configuração do CORS
 app.use(cors({
@@ -53,5 +59,6 @@ const PORT = process.env.PORT || 3333;
 
 app.listen(3333, ()=>{
     console.log(`Servidor rodando em http://localhost:${PORT}`);
+    console.log(`Documentação disponível em http://localhost:${PORT}/api-docs`);
     
 })
