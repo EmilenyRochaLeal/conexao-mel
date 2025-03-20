@@ -2,8 +2,6 @@ import { Request, Response } from  "express";
 import { CreateProdutoService } from "../../services/produto/CreateProdutoService";
 import { UploadedFile } from "express-fileupload";
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
-import { resolve } from "path";
-import { rejects } from "assert";
 
 
 cloudinary.config({
@@ -28,10 +26,12 @@ class CreateProdutoController {
                 cloudinary.uploader.upload_stream({}, function (error, result){
                     if (error){
                         reject(error);
+                        console.log('Sua imagem não foi salva')
                         return;
                     }
 
                     resolve(result)
+                    console.log('Imagem salva no  banco')
                 }).end(file.data)
 
             })
