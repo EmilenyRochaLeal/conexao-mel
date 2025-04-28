@@ -35,12 +35,6 @@ app.use(cors({
     credentials: true
 }));
 
-
-
-
-
-
-
 // Middleware para tratamento de erros
 app.use((err: Error, req: Request, res: Response, next: NextFunction)=>{
     if (err instanceof Error){
@@ -57,7 +51,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction)=>{
 
 const PORT = process.env.PORT || 3333;
 
-app.listen(3333, ()=>{
+app.listen(PORT, ()=>{
     console.log(`Servidor rodando em http://localhost:${PORT}`);
     console.log(`Documentação disponível em http://localhost:${PORT}/api-docs`);
     
