@@ -15,11 +15,28 @@ const app = express();
 
 app.use(express.json()); 
 
-app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true
+// app.use(cors({
+//     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+//     credentials: true
  
-}));
+// }));
+
+app.use(cors({
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'https://conexao-mel-front.vercel.app',
+        'http://localhost:3000'
+      ];
+  
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true
+  }));
+  
 app.use(fileUpload({
     limits: {fileSize: 50 * 1024 * 1024}
 }));
@@ -31,13 +48,6 @@ app.use(router);
 
 // Configuração do Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-
-// Configuração do CORS
-app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000', // URL do projeto frontend
-    credentials: true
-}));
 
 // Middleware para tratamento de erros
 app.use((err: Error, req: Request, res: Response, next: NextFunction)=>{
