@@ -7,6 +7,7 @@ import { CreateProdutoController } from "./controller/produto/CreateProdutoContr
 import { ListProdutoController } from "./controller/produto/ListProdutoController";
 import { DeleteProdutoController } from "./controller/produto/DeleteProdutoController";
 import { PutProdutoController } from "./controller/produto/PutProdutoController";
+import { ListMeusProdutosController } from "./controller/user/ListMeusProdutosController";
 
 import { isAuthenticated } from "./middleware/isAuthenticated";
 
@@ -29,6 +30,7 @@ router.post('/signin', new AuthUserController().handle)
 
 // Rotas do vendedor 
 router.get('/me', isAuthenticated , new VendedorController().handle)
+router.get('/me/meusprodutos', isAuthenticated, new ListMeusProdutosController().handle);
 
 
 // Rotas de produto
