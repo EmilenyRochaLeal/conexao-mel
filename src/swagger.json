@@ -128,6 +128,35 @@
         }
       }
     },
+    "/me/meusprodutos": {
+      "get": {
+        "summary": "Retorna os produtos do vendedor autenticado",
+        "tags": ["Vendedor"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Meus produtos cadastrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Produto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "404": {
+            "description": "Erro ao busca produtos"
+          }
+        }
+      }
+    },
     "/produto": {
       "post": {
         "summary": "Cadastra um novo produto",
