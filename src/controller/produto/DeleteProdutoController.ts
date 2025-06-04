@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { DeleteProdutoService } from "../../services/produto/DeleteProdutoService";
 
+
 class DeleteProdutoController{
     async handle(req: Request, res: Response){
-        const { id } = req.query as { id:string }
+        const { id } = req.params as { id:string }
         const deleteProdutoService =  new DeleteProdutoService();
 
         const produto = await deleteProdutoService.execute({ id });
