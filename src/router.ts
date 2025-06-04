@@ -38,7 +38,7 @@ router.get('/me/meusprodutos', isAuthenticated, new ListMeusProdutosController()
 router.post('/produto', isAuthenticated ,  new CreateProdutoController().handle)
 router.get('/listagem',  new ListProdutoController().handle)
 router.delete('/produto/:id',  isAuthenticated, new DeleteProdutoController().handle)
-router.put('/produto',  isAuthenticated, new PutProdutoController().handle)
+router.put('/produto/id',  isAuthenticated, new PutProdutoController().handle)
 
 
 export default  router;

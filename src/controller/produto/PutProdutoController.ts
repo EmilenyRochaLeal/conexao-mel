@@ -3,7 +3,7 @@ import { PutProdutoService } from '../../services/produto/PutProdutoService';
 
 class PutProdutoController {
     async handle(req: Request, res: Response){
-        const { id } = req.query;
+        const { id } = req.params  as { id: string };
         const { descricao, preco, imagemName, role } = req.body;
 
         const putProdutoService = new PutProdutoService();
