@@ -15,6 +15,8 @@ class ListProdutos{
                     role: true, 
                     vendedorId:true,
                     estoque:true,
+                    createdAt: true,
+                    updatedAt: true,
                     vendedor: {
                         select: {
                           name: true,

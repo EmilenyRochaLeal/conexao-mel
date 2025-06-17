@@ -11,6 +11,9 @@ class ListMeusProdutosService{
             preco: true,
             imagemName: true,
             descricao: true,
+            role: true,
+            createdAt: true,
+            updatedAt: true,
           },
         });
     
