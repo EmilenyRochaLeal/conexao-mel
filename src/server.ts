@@ -25,7 +25,7 @@ app.use(cors({
     origin: (origin, callback) => {
       const allowedOrigins = [
         'https://conexao-mel-front.vercel.app',
-        'https://www.conexaomel.com.br/',
+        'https://www.conexaomel.com.br',
         'http://localhost:3000'
       ];
   
