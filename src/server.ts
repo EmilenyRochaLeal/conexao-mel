@@ -1,4 +1,4 @@
-import express, {Response, Request, NextFunction} from 'express'
+import express, { Response, Request, NextFunction } from 'express'
 import 'express-async-errors';
 import cors from 'cors';
 import swaggerUi from "swagger-ui-express";
@@ -13,37 +13,37 @@ dotenv.config();
 
 const app = express();
 
-app.use(express.json()); 
+app.use(express.json());
 
 // app.use(cors({
 //     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
 //     credentials: true
- 
+
 // }));
 
 app.use(cors({
-    origin: (origin, callback) => {
-      const allowedOrigins = [
-        // 'https://conexao-mel-front.vercel.app',
-        'https://www.conexaomel.com.br',
-        'http://localhost:3000'
-      ];
-  
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true
-  }));
-  
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'https://conexao-mel-front.vercel.app',
+      'https://www.conexaomel.com.br',
+      'http://localhost:3000'
+    ];
+
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(fileUpload({
-    limits: {fileSize: 50 * 1024 * 1024}
+  limits: { fileSize: 50 * 1024 * 1024 }
 }));
 app.use(
-    '/files', 
-    express.static(path.resolve(__dirname, '..', 'tmp'))
+  '/files',
+  express.static(path.resolve(__dirname, '..', 'tmp'))
 )
 app.use(router);
 
@@ -51,23 +51,23 @@ app.use(router);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middleware para tratamento de erros
-app.use((err: Error, req: Request, res: Response, next: NextFunction)=>{
-    if (err instanceof Error){
-        return res.status(400).json({
-            error: err.message
-        })
-    }
-
-    return res.status(500).json({
-        status: 'error',
-        message: 'Internal server error.'
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof Error) {
+    return res.status(400).json({
+      error: err.message
     })
+  }
+
+  return res.status(500).json({
+    status: 'error',
+    message: 'Internal server error.'
+  })
 });
 
 const PORT = process.env.PORT || 3333;
 
-app.listen(PORT, ()=>{
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
-    console.log(`Documentação disponível em http://localhost:${PORT}/api-docs`);
-    
+app.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Documentação disponível em http://localhost:${PORT}/api-docs`);
+
 })
